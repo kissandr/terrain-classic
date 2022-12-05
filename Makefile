@@ -415,19 +415,19 @@ data/metro/%:
 # so the zip matches the shapefile name
 data/osmdata/land_polygons.zip:
 	@mkdir -p $$(dirname $@)
-	curl -Lf http://data.openstreetmapdata.com/land-polygons-complete-3857.zip -o $@
+	curl -Lf https://osmdata.openstreetmap.de/download/land-polygons-complete-3857.zip -o $@
 
 .SECONDARY: data/osmdata/land_polygons_split.zip
 
 data/osmdata/land_polygons_split.zip:
 	@mkdir -p $$(dirname $@)
-	curl -Lf http://data.openstreetmapdata.com/land-polygons-split-3857.zip -o $@
+	curl -Lf https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip -o $@
 
 .SECONDARY: data/osmdata/water_polygons.zip
 
 data/osmdata/water_polygons.zip:
 	@mkdir -p $$(dirname $@)
-	curl -Lf http://data.openstreetmapdata.com/water-polygons-split-3857.zip -o $@
+	curl -Lf https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip -o $@
 
 define natural_earth
 db/$(strip $(word 1, $(subst :, ,$(1)))): $(strip $(word 2, $(subst :, ,$(1)))) db/postgis
@@ -515,17 +515,17 @@ $(foreach a,$(scales),$(foreach b,$(themes),$(eval $(call natural_earth_sources,
 
 db/landcover: landcover/LCType_z9.tif
 
-landcover/LCType_z9.tif: landcover/LCType.tif
+landcover/LCType_z9.tif: landcover/GLC2000_EU_250m.tif
 	gdalwarp -t_srs EPSG:3857 -multi -wm 256 -wo NUM_THREADS=ALL_CPUS -co tiled=yes -co compress=lzw -co predictor=2 -co sparse_ok=true -co blockxsize=256 -co blockysize=256 -ts 131072 131072 $< $@
 	gdaladdo $@ --config COMPRESS_OVERVIEW LZW --config PREDICTOR_OVERVIEW 2 2 4 8 16 32 64 128 256
 
-landcover/LCType.tif: landcover/GlobalLandCover_tif.zip
+landcover/GLC2000_EU_250m: landcover/GlobalLandCover_tif.zip
 	unzip -oju $< -d $$(dirname $@)
 
 .SECONDARY: landcover/GlobalLandCover_tif.zip
 
 landcover/GlobalLandCover_tif.zip:
-	curl -fL "http://landcover.usgs.gov/documents/GlobalLandCover_tif.zip" -o $@
+	curl -fL "https://www.eea.europa.eu/data-and-maps/data/global-land-cover-250m/zipped-tif-files-250m-raster/zipped-tif-files-250m-raster/at_download/file" -o $@
 
 # complete wrapping
 else
