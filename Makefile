@@ -525,7 +525,7 @@ landcover/GLC2000_EU_250m: landcover/GlobalLandCover_tif.zip
 .SECONDARY: landcover/GlobalLandCover_tif.zip
 
 landcover/GlobalLandCover_tif.zip:
-	curl -fL "https://www.eea.europa.eu/data-and-maps/data/global-land-cover-250m/zipped-tif-files-250m-raster/zipped-tif-files-250m-raster/at_download/file" -o $@
+	curl -fL "http://www.eea.europa.eu/data-and-maps/data/global-land-cover-250m/zipped-tif-files-250m-raster/zipped-tif-files-250m-raster/at_download/file" -o $@
 
 # complete wrapping
 else
