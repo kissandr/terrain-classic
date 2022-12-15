@@ -402,32 +402,32 @@ $(foreach place,$(PLACES),$(eval $(call import,$(place))))
 
 data/extract/%:
 	@mkdir -p $$(dirname $@)
-	curl -Lf http://download.geofabrik.de/$(@:data/extract/%=%) -o $@
+	curl --insecure -Lf http://download.geofabrik.de/$(@:data/extract/%=%) -o $@
 
 .SECONDARY: data/metro/%
 
 data/metro/%:
 	@mkdir -p $$(dirname $@)
-	curl -Lf https://s3.amazonaws.com/metro-extracts.mapzen.com/$(@:data/metro/%=%) -o $@
+	curl --insecure -Lf https://s3.amazonaws.com/metro-extracts.mapzen.com/$(@:data/metro/%=%) -o $@
 
 .SECONDARY: data/osmdata/land_polygons.zip
 
 # so the zip matches the shapefile name
 data/osmdata/land_polygons.zip:
 	@mkdir -p $$(dirname $@)
-	curl -Lf https://osmdata.openstreetmap.de/download/land-polygons-complete-3857.zip -o $@
+	curl --insecure -Lf https://osmdata.openstreetmap.de/download/land-polygons-complete-3857.zip -o $@
 
 .SECONDARY: data/osmdata/land_polygons_split.zip
 
 data/osmdata/land_polygons_split.zip:
 	@mkdir -p $$(dirname $@)
-	curl -Lf https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip -o $@
+	curl --insecure -Lf https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip -o $@
 
 .SECONDARY: data/osmdata/water_polygons.zip
 
 data/osmdata/water_polygons.zip:
 	@mkdir -p $$(dirname $@)
-	curl -Lf https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip -o $@
+	curl --insecure -Lf https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip -o $@
 
 define natural_earth
 db/$(strip $(word 1, $(subst :, ,$(1)))): $(strip $(word 2, $(subst :, ,$(1)))) db/postgis
@@ -497,13 +497,13 @@ define natural_earth_sources
 
 data/ne/$(1)/$(2)/%.zip:
 	@mkdir -p $$(dir $$@)
-	curl -fL http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/$(1)/$(2)/$$(@:data/ne/$(1)/$(2)/%=%) -o $$@
+	curl --insecure -fL http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/$(1)/$(2)/$$(@:data/ne/$(1)/$(2)/%=%) -o $$@
 
 .SECONDARY: data/ne/$(1)/$(2)/%.zip
 
 data/ne-stamen/$(1)/$(2)/%.zip:
 	@mkdir -p $$(dir $$@)
-	curl -fL "https://github.com/stamen/natural-earth-vector/blob/master/zips/$(1)_$(2)/$$(@:data/ne-stamen/$(1)/$(2)/%=%)?raw=true" -o $$@
+	curl --insecure -fL "https://github.com/stamen/natural-earth-vector/blob/master/zips/$(1)_$(2)/$$(@:data/ne-stamen/$(1)/$(2)/%=%)?raw=true" -o $$@
 endef
 
 scales=10m 50m 110m
@@ -525,7 +525,7 @@ landcover/GLC2000_EU_250m: landcover/GlobalLandCover_tif.zip
 .SECONDARY: landcover/GlobalLandCover_tif.zip
 
 landcover/GlobalLandCover_tif.zip:
-	curl -fL "http://www.eea.europa.eu/data-and-maps/data/global-land-cover-250m/zipped-tif-files-250m-raster/zipped-tif-files-250m-raster/at_download/file" -o $@
+	curl --insecure -fL "http://www.eea.europa.eu/data-and-maps/data/global-land-cover-250m/zipped-tif-files-250m-raster/zipped-tif-files-250m-raster/at_download/file" -o $@
 
 # complete wrapping
 else

@@ -16,8 +16,10 @@ services:
           - /store/osm:/osm
       terrain:
         build: .
+        depends_on:
+          - postgis
         environment:
-          - DATABASE_URL=postgis://postgres:securepassword@postgis/gis
+          - DATABASE_URL=postgis://postgres:securepassword@postgis/postgres
           - POSTGRES_PASSWORD=securepassword
         volumes:
           - /store/osm:/osm
