@@ -1,0 +1,24 @@
+version: "3"
+services:
+      postgis:
+        image: postgis/postgis:11-3.3
+        expose:
+          - 5432
+        environment:
+          - POSTGRES_PASSWORD=tudomisen
+      tilemill:
+        image: apbarratt/tilemill
+        ports:
+          - 20008:20008
+          - 20009:20009
+        volumes:
+          - /home/andrew/Documents/MapBox:/root/Documents/MapBox
+          - /store/osm:/osm
+      terrain:
+        build: .
+        environment:
+          - DATABASE_URL=postgis://postgis:tudomisen@postgres/gis
+        volumes:
+          - /store/osm:/osm
+          - /home/andrew/Documents/MapBox:/root/Documents/MapBox
+
